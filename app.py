@@ -14,7 +14,11 @@ def create_app():
 
     @app.route("/")
     def index():
-        return "<h1>Bienvenue !</h1><p>La base est prête. <a href='/add_user'>Ajouter un utilisateur</a></p>"
+        db_con = db.get_db()
+        liste_user = db_con.execute(
+            "SELECT user.id, user.username FROM user "
+        ).fetchall()
+        return render_template("index.html", liste_user=liste_user)
     
     @app.route("/add_user", methods=["GET", "POST"])
     def add_user():
@@ -36,7 +40,7 @@ def create_app():
                         (nom, generate_password_hash(mdp)),
                     )
                     db_con.commit()
-                except db_con.IntegrityError:
+                except sqlite3.IntegrityError:
                     error = f"L'utilisateur {nom} existe déjà."
                 else:
                     print(f"L'utilisateur {nom} a été ajouté avec succès.")
@@ -46,6 +50,8 @@ def create_app():
 
         return render_template("add.html")
 
+    @app.route("/")
+    def update(id):
+        return f"Modification de l'utilisateur n°{id}"
 
     return app
-
