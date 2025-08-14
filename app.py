@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, url_for, flash, redirect
 import db  # ton fichier db.py
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 
 def create_app():
@@ -50,8 +50,43 @@ def create_app():
 
         return render_template("add.html")
 
-    @app.route("/")
+    @app.route("/<int:id>/update", methods=["GET", "POST"])
     def update(id):
-        return f"Modification de l'utilisateur n°{id}"
+        db_con = db.get_db()
+        user = db_con.execute(
+            "SELECT * FROM user WHERE id = ?", (id,)
+        ).fetchone()
+
+        if request.method == "POST":
+            nom = request.form.get("nom")
+            mdp = request.form.get("mdp")
+            error = None
+
+            if not nom:
+                error = "Le nom d'utilisateur est requis."
+            elif not mdp:
+                error = "Le mot de passe est requis."
+
+            if error is None:
+                if check_password_hash(user["password"], mdp):
+                    db_con.execute(
+                        "UPDATE user SET username = ? WHERE id = ?", (nom, id)
+                    )
+                    db_con.commit()
+                    return redirect(url_for("index"))
+                else:
+                    error = "Mot de passe incorrect."
+
+            flash(error)
+        
+        return render_template("update.html", user=user)
+    
+    @app.route("/<int:id>/delete", methods=["POST"])
+    def delete(id):
+        db_con = db.get_db()
+        db_con.execute("DELETE FROM user WHERE id = ?", (id,))
+        db_con.commit()
+
+        return redirect(url_for("index"))
 
     return app
