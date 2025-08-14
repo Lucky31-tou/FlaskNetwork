@@ -5,8 +5,10 @@
         <title>App Flask</title>
     </head>
     <body>
-        <h1>Voici la liste des utilisateurs</h1>
-        <ul>
+        <h1>Bienvenue sur FlaskNetwork</h1>
+        <a href="{{ url_for('add_user') }}">Inscrivez-vous</a>
+        <a href="{{ url_for('login')}}">Connectez-vous</a>
+        <!--<ul>
         {% for user in liste_user %}
             <li>
                 {{ user["id"] }} : {{ user["username"]}} 
@@ -16,6 +18,6 @@
                 </form>
             </li>
         {% endfor %}
-        </ul>
+        </ul>-->
     </body>
 </html>
