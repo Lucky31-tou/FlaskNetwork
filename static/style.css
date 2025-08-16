@@ -1,0 +1,42 @@
+:root {
+    --couleur-fond: #201314;
+    --couleur-texte-principal: #FF9592;
+    --couleur-primaire: #8C333A; 
+    --couleur-secondaire: #E5484D; 
+}
+
+body  {
+    background-color: var(--couleur-fond);
+    color: var(--couleur-texte-principal);
+}
+
+.btn-primary {
+    background-color: var(--couleur-primaire);
+    border-color: var(--couleur-secondaire);
+}
+
+.btn-primary:hover {
+    background-color: var(--couleur-secondaire);
+}
+
+.form-control {
+    background-color: #500F1C;
+    color: var(--couleur-texte-principal);
+}
+
+.form-control:focus {
+    border-color: #B54548;
+    box-shadow: none;
+}
+
+.navbar {
+    background-color: var(--couleur-primaire);
+}
+
+.card {
+    background-color: var(--couleur-primaire);
+}
+
+.card a {
+    color: var(--couleur-secondaire);
+}
