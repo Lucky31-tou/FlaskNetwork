@@ -1,7 +1,9 @@
-from flask import Flask, request, render_template, url_for, flash, redirect
+from flask import Flask, request, render_template, url_for, flash, redirect, session, g
 import db  # ton fichier db.py
 from werkzeug.security import generate_password_hash, check_password_hash
+
 import sqlite3
+
 
 def search_user(nom, mdp):
     db_con = db.get_db()
@@ -24,13 +26,10 @@ def create_app():
     )
     db.init_app(app)
 
+
     @app.route("/")
     def index():
-        db_con = db.get_db()
-        liste_user = db_con.execute(
-            "SELECT user.id, user.username FROM user "
-        ).fetchall()
-        return render_template("index.html", liste_user=liste_user)
+        return render_template("index.html")
     
 
     
@@ -61,6 +60,7 @@ def create_app():
                 except sqlite3.IntegrityError:
                     error = f"L'utilisateur {nom} existe déjà."
                 else:
+
                     return redirect(url_for("account", id=user["id"]))
 
             flash(error)
@@ -98,8 +98,11 @@ def create_app():
         
         return render_template("account.html", user=user)
     
+
     @app.route("/<int:id>/update", methods=["GET", "POST"])
+
     def update(id):
+
         db_con = db.get_db()
         user = db_con.execute(
             "SELECT * FROM user WHERE id = ?", (id,)

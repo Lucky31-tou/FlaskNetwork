@@ -1,26 +1,24 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>App Flask</title>
-    </head>
-    <body>
-        <h1>Inscription</h1>
-        <form action="{{ url_for('add_user')}}" method="POST">
-            <p>
-                <!-- Champ de type "text" -->
-                <label for="nom">Nom : </label>
-                <input type="text" name="nom" id="nom" required>
-            </p>
-            <p>
-                <!-- Champ de type "password" -->
-                <label for="mdp">Mot de passe : </label>
-                <input type="password" name="mdp" id="mdp" required>
-            </p>
-            <p>
-                <!-- Envoyer le formulaire -->
-                <button type="submit">Envoyer le formulaire</button>
-            </p>
-        </form>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+        <div class="container">
+            <h1>Inscrivez-vous</h1>
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-6">
+                    <form action="{{ url_for('add_user')}}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label" for="nom">Nom : </label>
+                            <input class="form-control" type="text" name="nom" id="nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="mdp">Mot de passe : </label>
+                            <input class="form-control" type="password" name="mdp" id="mdp" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Envoyer le formulaire</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}
